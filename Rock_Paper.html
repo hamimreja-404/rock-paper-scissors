@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Rock Paper Scissor</title>
+    <style>
+        body{
+            background-color: rgb(34, 32, 32);
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        button{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            font-size: 100px;
+            background-color: rgb(34, 32, 32);
+            border-color: #fff;
+            border-width: 3px;
+            margin: 15px;
+            cursor: pointer;
+        }
+        #rst,
+        .autoPlay{
+            width: 150px;
+            height: 50px;
+            border-radius: 0%;
+            font-size: 20px;
+            background-color: aqua;
+            margin-left: 100px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <button id="rock" onclick="playGame('rock')">👊</button>
+    <button id="paper" onclick="playGame('paper')">✋</button>
+    <button id="scissor" onclick="playGame('scissor')">✌️</button>
+    <p id="result">Chose Your Option</p>
+    <p id="choose"></p>
+    <p id="total_won"></p>
+    <button id="rst" onclick="rst()">Reset Result</button>
+    <button class="autoPlay" onclick="autoPlay()">Auto Play</button>
+
+
+    <script>
+        let autoplayInterval;
+        let computer_opt;
+        let com_won=0;
+        let you_won=0;
+        let keyIp;
+        function random_num(){
+            let computer = Math.random();
+            if(computer>=0 && computer <1/3){
+                return 'rock';
+            }
+            else if(computer>=1/3 && computer <2/3){
+                return 'paper';
+            }
+            else if(computer>=2/3 && computer <1){
+                return 'scissor';
+            }
+        }
+        document.body.addEventListener('keydown' , (event) => {
+            if(event.key === 'r'){
+                playGame('rock');
+            }
+            else if(event.key === 'p'){
+                playGame('paper');
+            }
+            else if(event.key === 's'){
+                playGame('scissor');
+            }
+        });
+        function playGame(userChoice){
+            computer_opt = random_num();
+            let result = '';
+            if(userChoice===computer_opt){
+                result = "It is a tie!";
+            }
+            else if(userChoice === 'rock' && computer_opt === 'scissor' ||
+                userChoice === 'paper' && computer_opt === 'rock' ||
+                userChoice === 'scissor' && computer_opt === 'paper')
+                {
+                result = "You won!";
+                you_won++;
+            }
+            else{
+                result = "You lost!";
+                com_won++;
+            }
+
+            if(userChoice === 'rock'){
+                userChoice = '👊';
+            }
+            else if(userChoice === 'paper'){
+                userChoice = '✋';
+            }
+            else if(userChoice === 'scissor'){
+                userChoice = '✌️';
+            }
+            if( computer_opt=='rock'){
+                computer_opt = '👊';
+            }
+            else if( computer_opt=='paper'){
+                computer_opt = '✋';
+            }
+            else if( computer_opt=='scissor'){
+                computer_opt = '✌️';
+            } 
+            document.getElementById('result').innerHTML = result;
+            document.getElementById('choose').innerHTML = `You chose ${userChoice} Computer chose ${computer_opt}`;
+            document.getElementById('total_won').innerHTML = ` You won ${you_won} times Computer won ${com_won} time`;
+        }
+
+        function rst(){
+            com_won = 0;
+            you_won = 0;
+            document.getElementById('result').innerHTML = 'Chose Your Option';
+            document.getElementById('choose').innerHTML = ` `;
+            document.getElementById('total_won').innerHTML = ` `;
+            
+        }
+        function autoPlay(){
+            if(!autoplayInterval){
+                autoplayInterval = setInterval(()=>{
+                let myOpt = random_num();
+                playGame(myOpt);
+            },1000);
+            document.querySelector('.autoPlay').innerHTML = 'Stop Auto Play';
+            }
+            else{
+                clearInterval(autoplayInterval);
+                document.querySelector('.autoPlay').innerHTML = 'Auto Play';
+                autoplayInterval=null;
+            }
+    }
+    </script>
+</body>
+</html>
